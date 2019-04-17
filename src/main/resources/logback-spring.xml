@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- IMPORTANT: Change this property to the path required -->
+    <property name="FILE_NAME" value="c:/logs/springBatch"/>
+   
+    <!-- By importing this we are importing the console and the spring boot files -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!-- <appender name="Console" 
+        class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %black(%d{ISO8601}) [%thread] %highlight(%-12level) %black(%C{1.}): %boldBlue(%msg%n%throwable)
+            </Pattern>
+        </layout>
+    </appender> -->
+    
+    <appender name="bootBatch" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${FILE_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">    	
+            <!-- daily rollover -->
+            <fileNamePattern>${FILE_NAME}.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- We can get the logs from the Spring framework -->
+    <logger name="org.springframework.transaction" level="ERROR" />
+
+    <logger name="org.springframework.jdbc" level="ERROR" />
+
+    <logger name="org.springframework.transaction.interceptor" level="ERROR" />
+
+    <root level="error">
+        <appender-ref ref="bootBatch" />
+<!--         <appender-ref ref="Console" /> -->
+    </root><!-- 
+ 
+    <logger name="com.xanite" level="All" additivity="false">
+        <appender-ref ref="bootBatch" />
+        <appender-ref ref="Console" />
+    </logger>
+ 
+    <logger name="org.hibernate" level="info" additivity="false">
+        <appender-ref ref="bootBatch" />
+        <appender-ref ref="Console" />
+    </logger> -->
+    
+    
+</configuration>
